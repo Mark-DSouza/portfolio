@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Dark is the brand default; the toggle sets data-theme explicitly. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ---- Restrained synthwave palette ---------------------------------- */
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --c-bg: #0d0b1e;
+  --c-surface-solid: #161230;
+  --c-text: #e8e6f5;
+  --c-muted: #9a94c2;
+  --c-border: #2a2450;
+  --c-magenta: #ff3d9a;
+  --c-cyan: #3ee8f0;
+  --c-glow: rgba(255, 61, 154, 0.35);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --c-bg: #faf9fd;
+  --c-surface-solid: #ffffff;
+  --c-text: #241d4b;
+  --c-muted: #645d92;
+  --c-border: #e2def2;
+  --c-magenta: #c81173;
+  --c-cyan: #0b7d8a;
+  --c-glow: rgba(200, 17, 115, 0.18);
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface-solid);
+  --color-ink: var(--c-text);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-border);
+  --color-magenta: var(--c-magenta);
+  --color-cyan: var(--c-cyan);
+  --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    ui-monospace, 'SFMono-Regular', 'Cascadia Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+}
+
+/* ---- Base ------------------------------------------------------------ */
+html {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  scrollbar-gutter: stable;
+}
+
+body {
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--c-magenta);
+  color: var(--c-bg);
+}
+
+/* Neon focus ring, consistent across themes */
+:focus-visible {
+  outline: 2px solid var(--c-cyan);
+  outline-offset: 2px;
+}
+
+/* Markdown body colors follow the theme */
+.prose {
+  --tw-prose-body: var(--c-text);
+  --tw-prose-headings: var(--c-text);
+  --tw-prose-lead: var(--c-muted);
+  --tw-prose-links: var(--c-cyan);
+  --tw-prose-bold: var(--c-text);
+  --tw-prose-counters: var(--c-muted);
+  --tw-prose-bullets: var(--c-magenta);
+  --tw-prose-hr: var(--c-border);
+  --tw-prose-quotes: var(--c-text);
+  --tw-prose-quote-borders: var(--c-magenta);
+  --tw-prose-captions: var(--c-muted);
+  --tw-prose-code: var(--c-cyan);
+  --tw-prose-pre-code: var(--c-text);
+  --tw-prose-pre-bg: var(--c-surface-solid);
+  --tw-prose-th-borders: var(--c-border);
+  --tw-prose-td-borders: var(--c-border);
+}

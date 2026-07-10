@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getOrderedProjects } from '../../lib/content';
+
+const projects = await getOrderedProjects();
+---
+
+<Layout
+  title="Projects"
+  description="Case studies of Mark D'Souza's engineering projects."
+>
+  <h1 class="font-mono text-sm tracking-widest text-cyan uppercase">Projects</h1>
+  <div class="mt-6 grid gap-5">
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+</Layout>

@@ -1,0 +1,16 @@
+---
+interface Props {
+  status: 'in-progress' | 'shipped';
+}
+const { status } = Astro.props;
+const label = status === 'in-progress' ? 'in progress' : 'shipped';
+---
+
+<span
+  class:list={[
+    'shrink-0 rounded-full border px-2.5 py-0.5 font-mono text-xs whitespace-nowrap',
+    status === 'in-progress' ? 'border-magenta text-magenta' : 'border-cyan text-cyan',
+  ]}
+>
+  {label}
+</span>

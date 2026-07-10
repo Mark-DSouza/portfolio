@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import PostCard from '../components/PostCard.astro';
+import { getOrderedProjects, getPublishedPosts } from '../lib/content';
+import { CONTACT_EMAIL, GITHUB_URL } from '../lib/site';
+
+const featured = (await getOrderedProjects()).filter((project) => project.data.featured);
+const recentPosts = (await getPublishedPosts()).slice(0, 3);
+---
+
+<Layout
+  title="Mark D'Souza — Full-Stack Software Engineer"
+  titleSuffix={false}
+  description="Full-stack software engineer working in Java/Spring Boot and React/TypeScript. Projects, case studies, and writing."
+>
+  <!-- Hero: the one horizon-gradient moment -->
+  <section class="relative py-14 sm:py-20">
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-magenta to-transparent"
+    >
+    </div>
+    <p class="font-mono text-sm text-cyan">Hi, I'm</p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+      Mark <span class="text-magenta">D'Souza</span>
+    </h1>
+    <p class="mt-4 max-w-xl text-lg text-muted">
+      Full-stack software engineer — Java/Spring Boot on the backend, React/TypeScript on the
+      front. I build web systems end to end and write about what I learn along the way.
+    </p>
+    <div class="mt-7 flex flex-wrap gap-4 font-mono text-sm">
+      <a
+        href="/projects"
+        class="rounded-md border border-magenta px-4 py-2 text-magenta transition-all hover:shadow-[0_0_20px_var(--c-glow)]"
+      >
+        See my work →
+      </a>
+      <a
+        href="/resume.pdf"
+        class="rounded-md border border-line px-4 py-2 text-muted transition-colors hover:border-cyan hover:text-cyan"
+      >
+        Resume
+      </a>
+      <a
+        href={GITHUB_URL}
+        class="rounded-md border border-line px-4 py-2 text-muted transition-colors hover:border-cyan hover:text-cyan"
+      >
+        GitHub
+      </a>
+    </div>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <section class="py-10">
+        <h2 class="font-mono text-sm tracking-widest text-cyan uppercase">Featured work</h2>
+        <div class="mt-5 grid gap-5">
+          {featured.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    recentPosts.length > 0 && (
+      <section class="py-10">
+        <h2 class="font-mono text-sm tracking-widest text-cyan uppercase">Recent writing</h2>
+        <div class="mt-2 divide-y divide-line">
+          {recentPosts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+        <a href="/blog" class="mt-4 inline-block font-mono text-xs text-muted hover:text-cyan">
+          all posts →
+        </a>
+      </section>
+    )
+  }
+
+  <section class="py-10" id="contact">
+    <h2 class="font-mono text-sm tracking-widest text-cyan uppercase">Contact</h2>
+    <p class="mt-4 max-w-xl text-muted">
+      The fastest way to reach me is email. I'm open to conversations about backend and full-stack
+      roles.
+    </p>
+    <a
+      href={`mailto:${CONTACT_EMAIL}`}
+      class="mt-4 inline-block rounded-md border border-cyan px-4 py-2 font-mono text-sm text-cyan transition-all hover:shadow-[0_0_20px_var(--c-glow)]"
+    >
+      {CONTACT_EMAIL}
+    </a>
+  </section>
+</Layout>

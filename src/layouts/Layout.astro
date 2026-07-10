@@ -1,0 +1,90 @@
+---
+import '@fontsource-variable/space-grotesk';
+import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { AUTHOR, CONTACT_EMAIL, GITHUB_URL } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute URL of the social-share image; falls back to none. */
+  ogImage?: string | undefined;
+  ogType?: 'website' | 'article';
+  /** Set false when the title already carries the site name (e.g. the landing page). */
+  titleSuffix?: boolean;
+}
+
+const { title, description, ogImage, ogType = 'website', titleSuffix = true } = Astro.props;
+const fullTitle = titleSuffix ? `${title} — ${AUTHOR}` : title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const nav = [
+  { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/resume.pdf', label: 'Resume' },
+];
+---
+
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Mark D'Souza — Blog" href="/rss.xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <script is:inline>
+      // The site's only JavaScript: apply the stored theme before first paint.
+      // Dark is the brand default for every first visit, regardless of OS preference.
+      document.documentElement.dataset.theme = localStorage.getItem('theme') ?? 'dark';
+    </script>
+  </head>
+  <body class="min-h-screen bg-bg text-ink">
+    <div class="mx-auto flex min-h-screen max-w-3xl flex-col px-5 sm:px-8">
+      <header class="flex items-center justify-between gap-4 py-8">
+        <a
+          href="/"
+          class="font-mono text-sm tracking-widest text-muted transition-colors hover:text-cyan"
+          >md$~</a
+        >
+        <nav class="flex items-center gap-5 sm:gap-7">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class="text-sm text-muted transition-colors hover:text-magenta"
+              >
+                {item.label}
+              </a>
+            ))
+          }
+          <ThemeToggle />
+        </nav>
+      </header>
+
+      <main class="flex-1 pb-16">
+        <slot />
+      </main>
+
+      <footer class="border-t border-line py-8">
+        <div class="flex flex-wrap items-center justify-between gap-3 font-mono text-xs text-muted">
+          <span>© {new Date().getFullYear()} {AUTHOR}</span>
+          <span class="flex gap-5">
+            <a href={GITHUB_URL} class="transition-colors hover:text-cyan">GitHub</a>
+            <a href={`mailto:${CONTACT_EMAIL}`} class="transition-colors hover:text-cyan">Email</a
+            >
+            <a href="/rss.xml" class="transition-colors hover:text-cyan">RSS</a>
+          </span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

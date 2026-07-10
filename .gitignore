@@ -1,0 +1,24 @@
+# build output
+dist/
+dist-test/
+# generated types and content-layer cache
+.astro/
+.astro-test/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+bun-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# test fixtures injected at test time — never committed, never deployed
+src/content/**/__fixture__*
+.gstack/

@@ -1,0 +1,28 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getPublishedPosts, getPublishedTags } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const tags = await getPublishedTags();
+  return tags.map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const posts = (await getPublishedPosts()).filter((post) => post.data.tags.includes(tag));
+---
+
+<Layout
+  title={`Posts tagged "${tag}"`}
+  description={`Blog posts by Mark D'Souza tagged "${tag}".`}
+>
+  <h1 class="font-mono text-sm tracking-widest text-cyan uppercase">
+    Tag: <span class="text-magenta">{tag}</span>
+  </h1>
+  <div class="mt-4 divide-y divide-line">
+    {posts.map((post) => <PostCard post={post} />)}
+  </div>
+  <a href="/blog" class="mt-8 inline-block font-mono text-xs text-muted hover:text-cyan"
+    >← all posts</a
+  >
+</Layout>

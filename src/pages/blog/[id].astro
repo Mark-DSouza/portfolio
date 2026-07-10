@@ -1,0 +1,64 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import TagPill from '../../components/TagPill.astro';
+import { coverOgImage, formatDate, getPublishedPosts } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const ogImage = coverOgImage(post.data.cover, Astro.site);
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  ogImage={ogImage}
+  ogType="article"
+>
+  <article>
+    <header>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        {
+          post.data.updatedDate && (
+            <span>
+              · updated{' '}
+              <time datetime={post.data.updatedDate.toISOString()}>
+                {formatDate(post.data.updatedDate)}
+              </time>
+            </span>
+          )
+        }
+        {post.data.draft && <span class="text-magenta">· draft preview</span>}
+      </div>
+      <h1 class="mt-2 text-3xl font-semibold tracking-tight">{post.data.title}</h1>
+      {
+        post.data.tags.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <TagPill tag={tag} />
+            ))}
+          </div>
+        )
+      }
+      {
+        post.data.cover && (
+          <Image
+            src={post.data.cover}
+            alt=""
+            class="mt-6 w-full rounded-lg border border-line"
+          />
+        )
+      }
+    </header>
+    <div class="prose mt-8 max-w-none">
+      <Content />
+    </div>
+  </article>
+</Layout>
