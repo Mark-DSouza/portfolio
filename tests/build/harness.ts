@@ -36,10 +36,15 @@ export function buildFixtureSite(
   const dist = join(ROOT, 'dist-test', variant);
   rmSync(dist, { recursive: true, force: true });
 
+  // Deploy-environment vars reach the build only through opts.env: an ambient
+  // CF_PAGES_BRANCH (e.g. tests running in CI) would silently flip a variant
+  // into draft inclusion.
+  const { CF_PAGES_BRANCH: _ambient, ...inherited } = process.env;
+
   const result = Bun.spawnSync(['bun', 'run', 'build'], {
     cwd: ROOT,
     env: {
-      ...process.env,
+      ...inherited,
       ...opts.env,
       NODE_ENV: 'production',
       CONTENT_DIR: './tests/fixtures/content',
