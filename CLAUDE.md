@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-**Greenfield — no code has been written yet.** This repo will hold Mark D'Souza's engineering portfolio + blog at `markdsouza.dev`. All architecture, stack, and hosting decisions are locked in `handoffs/markdsouza-portfolio-handoff.md` — read it before scaffolding or making structural decisions. The build plan (ordered steps) is in §4 of that document.
+**Greenfield — no code has been written yet.** This repo will hold Mark D'Souza's engineering portfolio + blog at `markdsouza.dev`. All architecture, stack, and hosting decisions are locked in `docs/handoffs/markdsouza-portfolio-handoff.md` — read it before scaffolding or making structural decisions. The build plan (ordered steps) is in §4 of that document.
 
 Once the Astro project is scaffolded, update this file with the actual commands and structure.
 
