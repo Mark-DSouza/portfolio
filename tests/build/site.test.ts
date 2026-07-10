@@ -110,10 +110,12 @@ describe('landing', () => {
     expect(landing).not.toContain('/projects/pinned');
   });
 
-  test('contact email and resume link are present', () => {
+  test('contact email, resume, GitHub, and LinkedIn links are present', () => {
     const landing = html();
     expect(landing).toContain('markdsouza434@gmail.com');
     expect(landing).toContain('/resume.pdf');
+    expect(landing).toContain('https://github.com/Mark-DSouza');
+    expect(landing).toContain('https://www.linkedin.com/in/mark-philip-dsouza/');
   });
 });
 

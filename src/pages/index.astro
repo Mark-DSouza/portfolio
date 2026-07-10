@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import PostCard from '../components/PostCard.astro';
 import { getOrderedProjects, getPublishedPosts } from '../lib/content';
-import { CONTACT_EMAIL, GITHUB_URL } from '../lib/site';
+import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL } from '../lib/site';
 
 const featured = (await getOrderedProjects()).filter((project) => project.data.featured);
 const recentPosts = (await getPublishedPosts()).slice(0, 3);
@@ -46,6 +46,12 @@ const recentPosts = (await getPublishedPosts()).slice(0, 3);
         class="rounded-md border border-line px-4 py-2 text-muted transition-colors hover:border-cyan hover:text-cyan"
       >
         GitHub
+      </a>
+      <a
+        href={LINKEDIN_URL}
+        class="rounded-md border border-line px-4 py-2 text-muted transition-colors hover:border-cyan hover:text-cyan"
+      >
+        LinkedIn
       </a>
     </div>
   </section>

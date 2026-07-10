@@ -2,7 +2,7 @@
 import '@fontsource-variable/space-grotesk';
 import '../styles/global.css';
 import ThemeToggle from '../components/ThemeToggle.astro';
-import { AUTHOR, CONTACT_EMAIL, GITHUB_URL } from '../lib/site';
+import { AUTHOR, CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL } from '../lib/site';
 
 interface Props {
   title: string;
@@ -79,6 +79,7 @@ const nav = [
           <span>© {new Date().getFullYear()} {AUTHOR}</span>
           <span class="flex gap-5">
             <a href={GITHUB_URL} class="transition-colors hover:text-cyan">GitHub</a>
+            <a href={LINKEDIN_URL} class="transition-colors hover:text-cyan">LinkedIn</a>
             <a href={`mailto:${CONTACT_EMAIL}`} class="transition-colors hover:text-cyan">Email</a
             >
             <a href="/rss.xml" class="transition-colors hover:text-cyan">RSS</a>
