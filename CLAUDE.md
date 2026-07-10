@@ -34,7 +34,7 @@ tests/fixtures/content/   mock content the build tests run against
 
 ## Testing model (do not change without discussion)
 
-Two seams, pre-agreed: (1) **build-and-inspect** — tests spawn the real `astro build` against `tests/fixtures/content` via env vars `CONTENT_DIR` / `OUT_DIR` (`dist-test/`) / `CACHE_DIR` (`.astro-test/`), then assert hardcoded expectations from the fixture literals; (2) **unit tests** for the ordering comparator. **Tests always use mock fixture data, never real content.** The `CACHE_DIR` split is load-bearing: Astro's content-layer store persists across builds and will leak fixture pages into real output if shared. Test spawns must set `NODE_ENV=production` (`bun test` sets `NODE_ENV=test`, which flips builds into dev-like draft inclusion).
+Two seams, pre-agreed: (1) **build-and-inspect** — tests build fixture content through `buildFixtureSite(variant)` in `tests/build/harness.ts`, then assert hardcoded expectations from the fixture literals; (2) **unit tests** for the ordering comparator. **Tests always use mock fixture data, never real content.** The harness is the single owner of the build env protocol (`NODE_ENV=production`, `CONTENT_DIR`, per-variant `OUT_DIR`/`CACHE_DIR` split, pre-build output wipe) — never spawn `astro build` in a test directly; its why-comments explain the footguns.
 
 ## Behavior invariants (enforced by tests)
 
