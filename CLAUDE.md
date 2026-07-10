@@ -50,8 +50,8 @@ Restrained synthwave: deep-night base, neon magenta/cyan accents (CSS vars in `s
 
 ## Content rules
 
-- **Real content only — never invent case studies, posts, or claims.** Landing copy and the `the-life-ledger` case study are drafts pending Mark's approval.
-- Launch gate (wiring the custom domain): Mark's resume PDF at `public/resume.pdf`, approved case study, and Mark's first blog post.
+- **Real content only — never invent case studies, posts, or claims.** Landing copy and the `the-life-ledger` case study were approved by Mark on 2026-07-10.
+- Launch gate (wiring the custom domain): Mark's first blog post. (Resume PDF and case-study approval are done.)
 - Mark drafts in Obsidian: convert `[[wikilinks]]` and callouts to standard markdown on the way in.
 - Scope boundary: engineering brand only — Flashback Photography (Mark's photography business) never appears here.
 
