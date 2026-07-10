@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="ui-sans-serif, system-ui, sans-serif">
+  <!-- browser chrome -->
+  <rect width="960" height="560" rx="14" fill="#0d0b1e"/>
+  <rect x="1" y="1" width="958" height="558" rx="13" fill="none" stroke="#2a2450" stroke-width="2"/>
+  <path d="M1 14 A13 13 0 0 1 14 1 H946 A13 13 0 0 1 959 14 V46 H1 Z" fill="#161230"/>
+  <circle cx="26" cy="24" r="6" fill="#ff5f57"/>
+  <circle cx="46" cy="24" r="6" fill="#febc2e"/>
+  <circle cx="66" cy="24" r="6" fill="#28c840"/>
+  <rect x="330" y="12" width="300" height="24" rx="12" fill="#0d0b1e" stroke="#2a2450"/>
+  <text x="480" y="28" text-anchor="middle" fill="#9a94c2" font-size="12" font-family="ui-monospace, Menlo, monospace">localhost:3000/board</text>
+
+  <!-- app canvas: neo-brutalist -->
+  <rect x="2" y="47" width="956" height="511" fill="#f5f1e8"/>
+
+  <!-- app header -->
+  <text x="42" y="106" fill="#111111" font-size="34" font-weight="900" letter-spacing="1">KANBAN<tspan fill="#ff4911">.</tspan></text>
+  <g>
+    <rect x="806" y="72" width="112" height="42" rx="6" fill="#ffe926" stroke="#111111" stroke-width="3"/>
+    <rect x="812" y="78" width="112" height="42" rx="6" fill="none" stroke="#111111" stroke-width="3" opacity="0.25"/>
+    <text x="862" y="99" text-anchor="middle" fill="#111111" font-size="15" font-weight="800">+ NEW</text>
+  </g>
+
+  <!-- ===== column: TO DO ===== -->
+  <g>
+    <rect x="50" y="146" width="272" height="368" rx="8" fill="#ffffff" stroke="#111111" stroke-width="3"/>
+    <rect x="58" y="154" width="272" height="368" rx="8" fill="none" stroke="#111111" stroke-width="3" opacity="0.18"/>
+    <rect x="50" y="146" width="272" height="52" rx="8" fill="#65d9e8" stroke="#111111" stroke-width="3"/>
+    <text x="74" y="179" fill="#111111" font-size="17" font-weight="900">TO DO</text>
+    <rect x="252" y="158" width="46" height="28" rx="14" fill="#ffffff" stroke="#111111" stroke-width="3"/>
+    <text x="275" y="177" text-anchor="middle" fill="#111111" font-size="13" font-weight="800">3</text>
+
+    <rect x="70" y="216" width="232" height="66" rx="6" fill="#fff" stroke="#111111" stroke-width="3"/>
+    <text x="86" y="243" fill="#111111" font-size="13" font-weight="700">Add drag-and-drop</text>
+    <rect x="86" y="254" width="64" height="18" rx="9" fill="#ffe926" stroke="#111111" stroke-width="2"/>
+    <text x="118" y="267" text-anchor="middle" fill="#111111" font-size="10" font-weight="800">UI</text>
+
+    <rect x="70" y="296" width="232" height="66" rx="6" fill="#fff" stroke="#111111" stroke-width="3"/>
+    <text x="86" y="323" fill="#111111" font-size="13" font-weight="700">Email notifications</text>
+    <rect x="86" y="334" width="76" height="18" rx="9" fill="#ff90e8" stroke="#111111" stroke-width="2"/>
+    <text x="124" y="347" text-anchor="middle" fill="#111111" font-size="10" font-weight="800">API</text>
+
+    <rect x="70" y="376" width="232" height="66" rx="6" fill="#fff" stroke="#111111" stroke-width="3"/>
+    <text x="86" y="403" fill="#111111" font-size="13" font-weight="700">Dark mode toggle</text>
+    <rect x="86" y="414" width="64" height="18" rx="9" fill="#ffe926" stroke="#111111" stroke-width="2"/>
+    <text x="118" y="427" text-anchor="middle" fill="#111111" font-size="10" font-weight="800">UI</text>
+  </g>
+
+  <!-- ===== column: IN PROGRESS ===== -->
+  <g>
+    <rect x="346" y="146" width="272" height="368" rx="8" fill="#ffffff" stroke="#111111" stroke-width="3"/>
+    <rect x="354" y="154" width="272" height="368" rx="8" fill="none" stroke="#111111" stroke-width="3" opacity="0.18"/>
+    <rect x="346" y="146" width="272" height="52" rx="8" fill="#ffe926" stroke="#111111" stroke-width="3"/>
+    <text x="370" y="179" fill="#111111" font-size="17" font-weight="900">IN PROGRESS</text>
+    <rect x="548" y="158" width="46" height="28" rx="14" fill="#ffffff" stroke="#111111" stroke-width="3"/>
+    <text x="571" y="177" text-anchor="middle" fill="#111111" font-size="13" font-weight="800">2</text>
+
+    <rect x="366" y="216" width="232" height="86" rx="6" fill="#fff" stroke="#111111" stroke-width="3"/>
+    <text x="382" y="243" fill="#111111" font-size="13" font-weight="700">Postgres schema +</text>
+    <text x="382" y="261" fill="#111111" font-size="13" font-weight="700">migrations</text>
+    <rect x="382" y="272" width="56" height="18" rx="9" fill="#65d9e8" stroke="#111111" stroke-width="2"/>
+    <text x="410" y="285" text-anchor="middle" fill="#111111" font-size="10" font-weight="800">DB</text>
+
+    <rect x="366" y="316" width="232" height="66" rx="6" fill="#fff" stroke="#111111" stroke-width="3"/>
+    <text x="382" y="343" fill="#111111" font-size="13" font-weight="700">Auth (sessions)</text>
+    <rect x="382" y="354" width="76" height="18" rx="9" fill="#ff90e8" stroke="#111111" stroke-width="2"/>
+    <text x="420" y="367" text-anchor="middle" fill="#111111" font-size="10" font-weight="800">API</text>
+  </g>
+
+  <!-- ===== column: DONE ===== -->
+  <g>
+    <rect x="642" y="146" width="272" height="368" rx="8" fill="#ffffff" stroke="#111111" stroke-width="3"/>
+    <rect x="650" y="154" width="272" height="368" rx="8" fill="none" stroke="#111111" stroke-width="3" opacity="0.18"/>
+    <rect x="642" y="146" width="272" height="52" rx="8" fill="#ff4911" stroke="#111111" stroke-width="3"/>
+    <text x="666" y="179" fill="#ffffff" font-size="17" font-weight="900">DONE</text>
+    <rect x="844" y="158" width="46" height="28" rx="14" fill="#ffffff" stroke="#111111" stroke-width="3"/>
+    <text x="867" y="177" text-anchor="middle" fill="#111111" font-size="13" font-weight="800">2</text>
+
+    <rect x="662" y="216" width="232" height="66" rx="6" fill="#fff" stroke="#111111" stroke-width="3"/>
+    <text x="678" y="243" fill="#111111" font-size="13" font-weight="700">Project scaffold ✓</text>
+    <rect x="678" y="254" width="72" height="18" rx="9" fill="#c4f000" stroke="#111111" stroke-width="2"/>
+    <text x="714" y="267" text-anchor="middle" fill="#111111" font-size="10" font-weight="800">SETUP</text>
+
+    <rect x="662" y="296" width="232" height="66" rx="6" fill="#fff" stroke="#111111" stroke-width="3"/>
+    <text x="678" y="323" fill="#111111" font-size="13" font-weight="700">CI pipeline ✓</text>
+    <rect x="678" y="334" width="72" height="18" rx="9" fill="#c4f000" stroke="#111111" stroke-width="2"/>
+    <text x="714" y="347" text-anchor="middle" fill="#111111" font-size="10" font-weight="800">SETUP</text>
+  </g>
+
+  <!-- footer note -->
+  <text x="480" y="542" text-anchor="middle" fill="#8a8578" font-size="11" font-family="ui-monospace, Menlo, monospace">illustration — the neo-brutalist style a UI sub-agent was told to enforce</text>
+</svg>
