@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "bun run build && wrangler dev",
     "typecheck": "astro check",
     "test:unit": "bun test tests/unit",
     "test:build": "bun test tests/build",
-    "test": "bun run test:unit && bun run test:build"
+    "test": "bun run test:unit && bun run test:build",
+    "generate-types": "wrangler types",
+    "deploy": "bun run build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.1.2",
     "@astrojs/mdx": "^7.0.2",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
@@ -26,6 +29,7 @@
     "@astrojs/check": "^0.9.9",
     "@types/bun": "^1.2.0",
     "fast-xml-parser": "^5.9.3",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "wrangler": "^4.110.0"
   }
 }

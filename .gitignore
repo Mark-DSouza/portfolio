@@ -22,3 +22,9 @@ bun-debug.log*
 # test fixtures injected at test time — never committed, never deployed
 src/content/**/__fixture__*
 .gstack/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
