@@ -41,7 +41,7 @@ Two seams, pre-agreed: (1) **build-and-inspect** — tests build fixture content
 - Drafts (`draft: true`) render in dev and on non-`main` Cloudflare Pages branches (`CF_PAGES_BRANCH`), never in production output.
 - Projects order: featured first, then priority (higher first, default 0), then date desc. Featured projects render as landing-page cards.
 - Every tag on a published post gets `/blog/tags/<tag>`; tags are zod-enforced lowercase-kebab.
-- `/rss.xml` carries published posts only. Sitemap + robots.txt ship.
+- `/rss.xml` carries published posts only in production builds; preview builds include drafts there too (Draft visibility is a property of the build, not of individual routes). Sitemap + robots.txt ship.
 - **Zero emitted JS files.** The only JavaScript is the inline theme script (dark default on first visit, toggle persisted to localStorage). No React in v1 — adding an island is a spec change, not a convenience.
 
 ## Design

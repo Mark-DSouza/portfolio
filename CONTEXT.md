@@ -20,6 +20,10 @@ _Avoid_: live site, deployment
 A blog entry at `/blog/<slug>`, authored as markdown (drafted in Obsidian, converted to standard markdown on the way in).
 _Avoid_: article, entry
 
+**Draft** (of a Post):
+A Post with `draft: true` in frontmatter. Draft visibility is a property of the build, not of individual routes: production builds exclude Drafts from every surface (pages, indexes, tag pages, RSS); dev and preview-branch builds include them everywhere.
+_Avoid_: unpublished, WIP
+
 **Status** (of a Project):
 Either `in-progress` or `shipped`. In-progress Projects can have published Case studies, badged honestly.
 
