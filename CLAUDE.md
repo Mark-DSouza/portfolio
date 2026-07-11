@@ -40,8 +40,10 @@ Two seams, pre-agreed (ADR-0003): (1) **e2e** — Playwright builds the fixture 
 
 - Publishing is merging to `main` (ADR-0001): builds are environment-independent, and a WIP post lives on an unmerged branch (its preview deploy shows it because the file is there). A stray `draft:` frontmatter key — or any unrecognized key, schemas are strict — fails the build.
 - Projects order: featured first, then priority (higher first, default 0), then date desc. Featured projects render as landing-page cards.
-- Every tag on a published post gets `/blog/tags/<tag>`; tags are zod-enforced lowercase-kebab.
+- Every tag on a published post gets `/blog/tags/<tag>`; tags are zod-enforced lowercase-kebab; the blog index lists tags alphabetically.
 - `/rss.xml` carries every post. Sitemap + robots.txt ship.
+- A piece with a Cover emits an absolute, resolvable `og:image`; a piece without one emits none.
+- Rendered calendar dates never shift with the build machine's timezone (fixture builds run at `TZ=Etc/GMT+12` to prove it).
 - **Zero emitted JS files.** The only JavaScript is the inline theme script (dark default on first visit, toggle persisted to localStorage). No React in v1 — adding an island is a spec change, not a convenience.
 
 ## Design

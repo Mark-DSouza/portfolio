@@ -27,7 +27,13 @@ export function fixtureDist(variant: string): string {
  *
  * Builds are environment-independent (ADR-0001 retired the Draft concept, the
  * only env-sensitive behavior), so no deploy-environment vars need forcing or
- * stripping here.
+ * stripping here. TZ is the deliberate exception: it is forced to a hostile
+ * timezone *because* builds must be environment-independent — CI and most dev
+ * machines sit at UTC or east of it, where an unpinned date format still
+ * renders the right calendar day, so only a west-of-UTC build can prove the
+ * UTC pinning in formatDate. Etc/GMT+12 is UTC-12 (POSIX signs invert): fixed
+ * offset, no DST, and every UTC-midnight frontmatter date renders a day early
+ * if the pin is lost.
  */
 export function buildFixtureSite(variant: string, opts: { contentDir?: string } = {}): void {
   rmSync(fixtureDist(variant), { recursive: true, force: true });
@@ -40,6 +46,7 @@ export function buildFixtureSite(variant: string, opts: { contentDir?: string } 
       CONTENT_DIR: opts.contentDir ?? './tests/fixtures/content',
       OUT_DIR: `./dist-test/${variant}`,
       CACHE_DIR: `./.astro-test/${variant}`,
+      TZ: 'Etc/GMT+12',
     },
   });
   if (result.status !== 0) {

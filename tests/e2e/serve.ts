@@ -1,4 +1,4 @@
-import { buildFixtureSite } from './harness';
+import { buildFixtureSite, fixtureDist } from './harness';
 
 /**
  * E2E web server, owned by playwright.config.ts (its webServer block runs and
@@ -15,7 +15,7 @@ buildFixtureSite('e2e');
 const port = process.env.E2E_PORT;
 if (!port) throw new Error('E2E_PORT unset — run via `bun run test:e2e`, not directly');
 const server = Bun.spawn(
-  ['bunx', 'wrangler', 'dev', '--assets', './dist-test/e2e', '--port', port],
+  ['bunx', 'wrangler', 'dev', '--assets', fixtureDist('e2e'), '--port', port],
   { stdout: 'inherit', stderr: 'inherit' }
 );
 process.exit(await server.exited);

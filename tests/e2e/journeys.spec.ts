@@ -45,6 +45,23 @@ test('the blog index lists posts newest first', async ({ page }) => {
   await expect(posts.last()).toContainText('Fixture Alpha');
 });
 
+test('the blog index lists Tags alphabetically', async ({ page }) => {
+  await page.goto('/blog/');
+  const tags = page.locator('main a[href^="/blog/tags/"]');
+  // Insertion order would be shared-then-alpha (Beta is the newer post): the
+  // sorted order must win, or the tag strip reshuffles every time a Post
+  // publishes.
+  await expect(tags).toHaveText(['fixture-alpha-tag', 'fixture-shared-tag']);
+});
+
+test('a Post page renders its frontmatter calendar date', async ({ page }) => {
+  await page.goto('/blog/published-alpha/');
+  // 2026-01-05 parses as UTC midnight, and the fixture build runs at
+  // TZ=Etc/GMT+12 (harness.ts): an unpinned formatDate renders Jan 4 there,
+  // so this passing proves the UTC pin, not just the happy path.
+  await expect(page.locator('article time').first()).toHaveText('Jan 5, 2026');
+});
+
 test('the projects index renders Featured → Priority → date order', async ({ page }) => {
   await page.goto('/projects/');
   const cards = page.locator('main a[href*="/projects/"]');
