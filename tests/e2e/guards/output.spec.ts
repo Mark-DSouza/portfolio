@@ -1,7 +1,8 @@
 import { readdirSync } from 'node:fs';
 import { XMLValidator } from 'fast-xml-parser';
 import { expect, test } from '@playwright/test';
-import { fixtureDist } from './harness';
+import { fixtureDist } from '../harness';
+import { posts } from '../../fixtures/facts';
 
 // Feeds and shipped artifacts, asserted where their consumers meet them: an
 // RSS reader, a crawler, and a recruiter fetch these over HTTP.
@@ -14,10 +15,11 @@ test('the RSS feed is well-formed XML carrying exactly the fixture posts', async
   const rss = await response.text();
   expect(XMLValidator.validate(rss)).toBe(true);
   expect(rss).toContain('<rss');
-  expect(rss).toContain('/blog/published-alpha');
-  expect(rss).toContain('/blog/published-beta');
-  // Exactly the two fixture posts — a feed leaking extra entries must fail.
-  expect(rss.match(/<item>/g)).toHaveLength(2);
+  for (const post of Object.values(posts)) {
+    expect(rss).toContain(`/blog/${post.slug}`);
+  }
+  // Exactly the fixture posts — a feed leaking extra entries must fail.
+  expect(rss.match(/<item>/g)).toHaveLength(Object.keys(posts).length);
 });
 
 test('a well-formed sitemap and a valid robots.txt are served', async ({ request }) => {
