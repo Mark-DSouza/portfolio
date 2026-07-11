@@ -27,7 +27,8 @@ test('a covered piece carries a resolvable absolute og:image; an uncovered one c
     // Absolute against the production origin: a relative URL is useless to a
     // scraper reading the page off-site.
     expect(ogImage, `og:image on ${path}`).toMatch(/^https:\/\/markdsouza\.dev\//);
-    // The fingerprinted asset path must actually resolve to image bytes.
+    // The fingerprinted asset path must actually resolve to image bytes —
+    // checked via the PNG signature (\x89PNG…), whose bytes 1–3 spell "PNG".
     const asset = await request.get(new URL(ogImage!).pathname);
     expect(asset.status()).toBe(200);
     expect((await asset.body()).subarray(1, 4).toString()).toBe('PNG');
