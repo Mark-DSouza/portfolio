@@ -79,4 +79,4 @@ export const allPages = [
   ...Object.values(posts).map((post) => post.path),
   ...Object.values(projects).map((project) => project.path),
   ...Object.values(tags).map(tagPath),
-];
+] as const;

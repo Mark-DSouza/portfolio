@@ -42,8 +42,10 @@ test('a visitor walks landing → blog → Post → Tag page → back to the ind
 test('the blog index lists posts newest first', async ({ page }) => {
   await page.goto('/blog/');
   const cards = page.locator('main a[href*="/blog/published-"]');
-  await expect(cards.first()).toContainText(postsNewestFirst[0].title);
-  await expect(cards.last()).toContainText(postsNewestFirst[1].title);
+  await expect(cards).toHaveCount(postsNewestFirst.length);
+  for (const [index, post] of postsNewestFirst.entries()) {
+    await expect(cards.nth(index)).toContainText(post.title);
+  }
 });
 
 test('the blog index lists Tags alphabetically', async ({ page }) => {
