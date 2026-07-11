@@ -59,8 +59,9 @@ test('the projects index renders Featured → Priority → date order', async ({
 test('the landing page shows Featured cards only, plus the contact links', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('link', { name: 'Fixture Flagship' })).toBeVisible();
-  // Non-Featured projects do not surface on the landing page.
-  await expect(page.locator('a[href*="/projects/pinned"]')).toHaveCount(0);
+  // Exactly one project card: the sole Featured fixture. Non-Featured
+  // projects (pinned, recent, older) must not surface on the landing page.
+  await expect(page.locator('main a[href^="/projects/"]')).toHaveCount(1);
 
   await expect(page.locator('a[href="mailto:markdsouza434@gmail.com"]').first()).toBeVisible();
   await expect(page.locator('a[href="/resume.pdf"]').first()).toBeVisible();
