@@ -2,24 +2,17 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { compareProjects } from './ordering';
 
 /**
- * Drafts render in dev and on Cloudflare Pages preview deploys, but are
- * excluded from the production build (the `main` branch deploy).
+ * Every Post in the build is published: git is the draft mechanism (ADR-0001),
+ * so an unmerged branch is the only place work-in-progress lives.
  */
-const onPreviewBranch =
-  typeof process !== 'undefined' &&
-  process.env.CF_PAGES_BRANCH !== undefined &&
-  process.env.CF_PAGES_BRANCH !== 'main';
-
-export const includeDrafts = import.meta.env.DEV || onPreviewBranch;
-
-export async function getPublishedPosts(): Promise<CollectionEntry<'blog'>[]> {
-  const posts = await getCollection('blog', ({ data }) => includeDrafts || !data.draft);
+export async function getPosts(): Promise<CollectionEntry<'blog'>[]> {
+  const posts = await getCollection('blog');
   return posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-/** Unique tags across published posts — each of these gets a tag page. */
-export async function getPublishedTags(): Promise<string[]> {
-  const posts = await getPublishedPosts();
+/** Unique tags across Posts — each of these gets a tag page. */
+export async function getTags(): Promise<string[]> {
+  const posts = await getPosts();
   return [...new Set(posts.flatMap((post) => post.data.tags))].toSorted();
 }
 

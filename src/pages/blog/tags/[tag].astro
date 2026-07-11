@@ -1,15 +1,15 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import PostCard from '../../../components/PostCard.astro';
-import { getPublishedPosts, getPublishedTags } from '../../../lib/content';
+import { getPosts, getTags } from '../../../lib/content';
 
 export async function getStaticPaths() {
-  const tags = await getPublishedTags();
+  const tags = await getTags();
   return tags.map((tag) => ({ params: { tag } }));
 }
 
 const { tag } = Astro.params;
-const posts = (await getPublishedPosts()).filter((post) => post.data.tags.includes(tag));
+const posts = (await getPosts()).filter((post) => post.data.tags.includes(tag));
 ---
 
 <Layout

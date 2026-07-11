@@ -21,8 +21,8 @@ A blog entry at `/blog/<slug>`, authored as markdown (drafted in Obsidian, conve
 _Avoid_: article, entry
 
 **Draft** (of a Post):
-A Post with `draft: true` in frontmatter. Draft visibility is a property of the build, not of individual routes: production builds exclude Drafts from every surface (pages, indexes, tag pages, RSS); dev and preview-branch builds include them everywhere.
-_Avoid_: unpublished, WIP
+A Post that exists only on an unmerged branch. Publishing is the act of merging to `main` — there is no draft flag, and a build renders every Post it can see (ADR-0001).
+_Avoid_: unpublished, WIP, draft flag
 
 **Status** (of a Project):
 Either `in-progress` or `shipped`. In-progress Projects can have published Case studies, badged honestly.
