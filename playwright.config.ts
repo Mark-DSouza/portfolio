@@ -18,15 +18,14 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
-    // schema/output are browserless (build guards, HTTP fetches, fs globs):
-    // viewport-irrelevant, and the schema builds would race two workers over
-    // the same variant output dir if run per-project.
-    {
-      name: 'mobile',
-      use: { ...devices['Pixel 7'] },
-      testIgnore: ['**/schema.spec.ts', '**/output.spec.ts'],
-    },
+    // tests/e2e/guards/ is browserless (build guards, HTTP fetches, fs
+    // globs): viewport-irrelevant, and the schema-guard builds would race
+    // two workers over the same variant output dir if run per-browser.
+    // Scoping by directory makes that structural — a spec added or renamed
+    // under guards/ can never be re-included in the browser matrix.
+    { name: 'guards', testMatch: 'guards/**' },
+    { name: 'desktop', use: { ...devices['Desktop Chrome'] }, testIgnore: 'guards/**' },
+    { name: 'mobile', use: { ...devices['Pixel 7'] }, testIgnore: 'guards/**' },
   ],
   webServer: {
     command: 'bun tests/e2e/serve.ts',

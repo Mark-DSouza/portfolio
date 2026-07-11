@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { posts, projects } from '../fixtures/facts';
 
 // HTTP-level truths: behaviors that exist only in how the server answers, not
 // in any built file. Serving semantics come from wrangler.jsonc (ADR-0002).
@@ -22,7 +23,7 @@ test('a covered piece carries a resolvable absolute og:image; an uncovered one c
   request,
 }) => {
   // Alpha (Post) and flagship (Case study) carry fixture covers.
-  for (const path of ['/blog/published-alpha/', '/projects/flagship/']) {
+  for (const path of [posts.alpha.path, projects.flagship.path]) {
     const ogImage = ogImageOf(await (await request.get(path)).text());
     // Absolute against the production origin: a relative URL is useless to a
     // scraper reading the page off-site.
@@ -36,7 +37,7 @@ test('a covered piece carries a resolvable absolute og:image; an uncovered one c
 
   // Beta has no cover: no og:image may be emitted (a broken/empty one would
   // make scrapers render a dead image instead of falling back to text).
-  const beta = await (await request.get('/blog/published-beta/')).text();
+  const beta = await (await request.get(posts.beta.path)).text();
   expect(ogImageOf(beta)).toBeUndefined();
 });
 
