@@ -9,9 +9,8 @@
     "preview": "astro preview",
     "typecheck": "astro check",
     "test:unit": "bun test tests/unit",
-    "test:build": "bun test tests/build",
     "test:e2e": "playwright test",
-    "test": "bun run test:unit && bun run test:build"
+    "test": "bun run test:unit && bun run test:e2e"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",

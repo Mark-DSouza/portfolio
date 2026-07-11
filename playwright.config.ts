@@ -19,7 +19,9 @@ export default defineConfig({
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+    // Build guards spawn browserless builds into per-variant dirs; running
+    // them per-project would race two workers over the same output dir.
+    { name: 'mobile', use: { ...devices['Pixel 7'] }, testIgnore: '**/schema.spec.ts' },
   ],
   webServer: {
     command: 'bun tests/e2e/serve.ts',
