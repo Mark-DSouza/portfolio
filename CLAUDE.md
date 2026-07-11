@@ -10,7 +10,7 @@ Mark D'Souza's engineering portfolio + blog at `markdsouza.dev`. Astro 7 (static
 
 ```bash
 bun install          # deps
-bun run dev          # dev server (drafts visible)
+bun run dev          # dev server
 bun run build        # production build → dist/
 bun run typecheck    # astro check
 bun run test         # unit + build tests
@@ -24,7 +24,7 @@ bun run test:build   # build-and-inspect tests only (builds fixtures → dist-te
 src/content.config.ts     zod schemas for blog + projects collections
 src/content/{blog,projects}/   real content (markdown, co-located images)
 src/lib/ordering.ts       Featured → Priority desc → date desc comparator (unit-tested)
-src/lib/content.ts        published/draft filtering, tag derivation, project ordering
+src/lib/content.ts        post sorting, tag derivation, project ordering
 src/pages/                landing, blog (+tags), projects, rss.xml, 404
 src/layouts/Layout.astro  head/meta/theme script, header, footer
 tests/unit/               comparator tests
@@ -34,14 +34,14 @@ tests/fixtures/content/   mock content the build tests run against
 
 ## Testing model (do not change without discussion)
 
-Two seams, pre-agreed: (1) **build-and-inspect** — tests build fixture content through `buildFixtureSite(variant)` in `tests/build/harness.ts`, then assert hardcoded expectations from the fixture literals; (2) **unit tests** for the ordering comparator. **Tests always use mock fixture data, never real content.** The harness is the single owner of the build env protocol (`NODE_ENV=production`, `CONTENT_DIR`, per-variant `OUT_DIR`/`CACHE_DIR` split, pre-build output wipe) — never spawn `astro build` in a test directly; its why-comments explain the footguns.
+Two seams, pre-agreed: (1) **build-and-inspect** — tests build fixture content through `buildFixtureSite(variant)` in `tests/build/harness.ts`, then assert hardcoded expectations from the fixture literals; (2) **unit tests** for the ordering comparator. **Tests always use mock fixture data, never real content.** The harness is the single owner of the build dir protocol (`CONTENT_DIR`, per-variant `OUT_DIR`/`CACHE_DIR` split, pre-build output wipe) — never spawn `astro build` in a test directly; its why-comments explain the footguns.
 
 ## Behavior invariants (enforced by tests)
 
-- Drafts (`draft: true`) render in dev and on non-`main` Cloudflare Pages branches (`CF_PAGES_BRANCH`), never in production output.
+- Publishing is merging to `main` (ADR-0001): builds are environment-independent, and a WIP post lives on an unmerged branch (its preview deploy shows it because the file is there). A stray `draft:` frontmatter key — or any unrecognized key, schemas are strict — fails the build.
 - Projects order: featured first, then priority (higher first, default 0), then date desc. Featured projects render as landing-page cards.
 - Every tag on a published post gets `/blog/tags/<tag>`; tags are zod-enforced lowercase-kebab.
-- `/rss.xml` carries published posts only in production builds; preview builds include drafts there too (Draft visibility is a property of the build, not of individual routes). Sitemap + robots.txt ship.
+- `/rss.xml` carries every post. Sitemap + robots.txt ship.
 - **Zero emitted JS files.** The only JavaScript is the inline theme script (dark default on first visit, toggle persisted to localStorage). No React in v1 — adding an island is a spec change, not a convenience.
 
 ## Design
@@ -57,7 +57,7 @@ Restrained synthwave: deep-night base, neon magenta/cyan accents (CSS vars in `s
 
 ## Deploy (Cloudflare Pages)
 
-Build command `bun run build`, output `dist`, pin `BUN_VERSION` env var. Custom domain: apex + `www` redirect, wired natively (zone is in the same Cloudflare account). Preview deploys show drafts; production (`main`) excludes them.
+Build command `bun run build`, output `dist`, pin `BUN_VERSION` env var. Custom domain: apex + `www` redirect, wired natively (zone is in the same Cloudflare account). Preview deploys show whatever is on their branch; publishing is merging to `main` (ADR-0001).
 
 ## Deferred (see handoff §6 / issue #1 out-of-scope)
 

@@ -6,7 +6,6 @@ import { buildFixtureSite, type FixtureSite } from './harness';
 
 const ROOT = join(import.meta.dirname, '../..');
 
-/** Production variant: drafts excluded from every surface. */
 let site: FixtureSite;
 beforeAll(() => {
   site = buildFixtureSite('production');
@@ -27,12 +26,6 @@ describe('blog', () => {
     expect(beta).toBeLessThan(alpha); // beta (2026-02-10) is newer than alpha (2026-01-05)
   });
 
-  test('draft posts appear nowhere in the production output', () => {
-    expect(site.exists('blog', 'draft-gamma')).toBe(false);
-    expect(site.html('blog')).not.toContain('draft-gamma');
-    expect(site.html('blog')).not.toContain('Fixture Gamma');
-  });
-
   test('every tag on a published post gets a tag page listing its posts', () => {
     const shared = site.html('blog', 'tags', 'fixture-shared-tag');
     expect(shared).toContain('/blog/published-alpha');
@@ -43,9 +36,6 @@ describe('blog', () => {
     expect(alphaOnly).not.toContain('/blog/published-beta');
   });
 
-  test('tags used only by drafts get no tag page', () => {
-    expect(site.exists('blog', 'tags', 'fixture-draft-only-tag')).toBe(false);
-  });
 });
 
 describe('projects', () => {
@@ -98,14 +88,42 @@ describe('landing', () => {
   });
 });
 
+describe('frontmatter strictness', () => {
+  // Schemas are .strict(): a misspelled key fails the build instead of being
+  // silently stripped (a typo'd `tags:` would otherwise just lose the tags).
+  test(
+    'an unrecognized frontmatter key fails the build',
+    () => {
+      expect(() =>
+        buildFixtureSite('typo-key', { contentDir: './tests/fixtures/typo-key-content' })
+      ).toThrow(/unrecognized key/i);
+    },
+    120_000
+  );
+});
+
+describe('draft retirement', () => {
+  // The Draft concept is retired (ADR-0001): git branches are the draft
+  // mechanism. A leftover `draft:` key must fail the build loudly so a post
+  // the author believed hidden can never silently publish.
+  test(
+    'a stray draft: key fails the build with a retirement error',
+    () => {
+      expect(() =>
+        buildFixtureSite('draft-key', { contentDir: './tests/fixtures/draft-key-content' })
+      ).toThrow(/draft.*retired[\s\S]*unmerged branch/i);
+    },
+    120_000
+  );
+});
+
 describe('feeds and output hygiene', () => {
-  test('the RSS feed is well-formed XML carrying published posts only', () => {
+  test('the RSS feed is well-formed XML carrying every post', () => {
     const rss = site.file('rss.xml');
     expect(XMLValidator.validate(rss)).toBe(true);
     expect(rss).toContain('<rss');
     expect(rss).toContain('/blog/published-alpha');
     expect(rss).toContain('/blog/published-beta');
-    expect(rss).not.toContain('draft-gamma');
   });
 
   test('a well-formed sitemap is generated', () => {

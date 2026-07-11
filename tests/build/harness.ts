@@ -15,39 +15,35 @@ export interface FixtureSite {
 }
 
 /**
- * Build-and-inspect seam: run the real production build against the mock
- * content in tests/fixtures/content, then assert over the generated output.
- * Expected values are hardcoded from the fixture literals.
+ * Build-and-inspect seam: run the real production build against mock content
+ * (tests/fixtures/content unless a variant supplies its own), then assert over
+ * the generated output. Expected values are hardcoded from the fixture
+ * literals.
  *
- * This harness owns the build env protocol; callers never touch it:
- * - NODE_ENV is forced to `production` — `bun test` sets NODE_ENV=test, which
- *   would silently flip the build into dev-like draft inclusion.
+ * This harness owns the build dir protocol; callers never touch it:
  * - OUT_DIR and CACHE_DIR are derived per variant. The cache split is
  *   load-bearing: Astro's content-layer store persists across builds and
  *   would leak fixture pages into real output (or across variants) if shared.
  * - The variant's output dir is wiped before building so absence assertions
  *   can never pass against stale output from a previous run. The cache dir is
  *   kept for build speed.
+ *
+ * Builds are environment-independent (ADR-0001 retired the Draft concept, the
+ * only env-sensitive behavior), so no deploy-environment vars need forcing or
+ * stripping here.
  */
 export function buildFixtureSite(
   variant: string,
-  opts: { env?: Record<string, string> } = {}
+  opts: { contentDir?: string } = {}
 ): FixtureSite {
   const dist = join(ROOT, 'dist-test', variant);
   rmSync(dist, { recursive: true, force: true });
 
-  // Deploy-environment vars reach the build only through opts.env: an ambient
-  // CF_PAGES_BRANCH (e.g. tests running in CI) would silently flip a variant
-  // into draft inclusion.
-  const { CF_PAGES_BRANCH: _ambient, ...inherited } = process.env;
-
   const result = Bun.spawnSync(['bun', 'run', 'build'], {
     cwd: ROOT,
     env: {
-      ...inherited,
-      ...opts.env,
-      NODE_ENV: 'production',
-      CONTENT_DIR: './tests/fixtures/content',
+      ...process.env,
+      CONTENT_DIR: opts.contentDir ?? './tests/fixtures/content',
       OUT_DIR: `./dist-test/${variant}`,
       CACHE_DIR: `./.astro-test/${variant}`,
     },
