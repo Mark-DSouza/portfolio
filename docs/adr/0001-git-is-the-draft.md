@@ -4,7 +4,7 @@ The site once excluded `draft: true` Posts from production builds while renderin
 
 ## Consequences
 
-- Work-in-progress Posts cannot sit in `main` unpublished; they live on branches, whose preview deploys show them because the file is there — not because a flag flipped.
+- Work-in-progress Posts cannot sit in `main` unpublished; they live on branches. Previewing a draft is local (`bun run dev`, or `bun run build` + `wrangler dev` for the deploy-faithful version) — non-production branch builds are disabled in the Cloudflare dashboard, so there are no hosted branch previews. Re-enabling them (plus Preview URLs) restores hosted previews without any repo change.
 - A stray `draft:` key fails the build with a message pointing here, so a Post the author believed hidden can never silently publish. Frontmatter schemas are `.strict()` generally: any unrecognized key fails the build rather than silently vanishing.
 - The build-test harness no longer forces or strips deploy-environment variables; the preview-variant test suite is gone.
 
