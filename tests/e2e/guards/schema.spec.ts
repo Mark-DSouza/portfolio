@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { buildFixtureSite } from './harness';
+import { buildFixtureSite } from '../harness';
 
 // Build-time schema guards: no browser, no server — these spawn real builds
 // against purpose-built failing fixtures and assert the build refuses them.

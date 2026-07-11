@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { allPages } from '../fixtures/facts';
 
 /** Same-origin URLs without a file extension are pages; the rest are assets. */
 function isPageLink(pathname: string): boolean {
@@ -69,19 +70,5 @@ test('every internal link and image reachable from the landing page resolves', a
 
   // The exact page set is determined by the fixture literals: if a page drops
   // out of the link graph (or an unexpected one appears), the crawl must say so.
-  expect([...seenPages].sort()).toEqual(
-    [
-      '/',
-      '/blog/',
-      '/blog/published-alpha/',
-      '/blog/published-beta/',
-      '/blog/tags/fixture-alpha-tag/',
-      '/blog/tags/fixture-shared-tag/',
-      '/projects/',
-      '/projects/flagship/',
-      '/projects/older/',
-      '/projects/pinned/',
-      '/projects/recent/',
-    ].sort()
-  );
+  expect([...seenPages].sort()).toEqual([...allPages].sort());
 });
