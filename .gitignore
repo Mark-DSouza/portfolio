@@ -6,6 +6,9 @@ dist-test/
 .astro-test/
 # wrangler local state
 .wrangler/
+# playwright output
+test-results/
+playwright-report/
 
 # dependencies
 node_modules/
