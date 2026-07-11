@@ -1,0 +1,30 @@
+import { defineConfig, devices } from '@playwright/test';
+
+const PORT = Number(process.env.E2E_PORT ?? 8788);
+
+/**
+ * E2E seam: real browser over HTTP against the fixture site, served by
+ * wrangler with the production wrangler.jsonc semantics (tests/e2e/serve.ts
+ * builds and serves; this config owns its lifecycle).
+ */
+export default defineConfig({
+  testDir: './tests/e2e',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
+  use: {
+    baseURL: `http://localhost:${PORT}`,
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+  },
+  projects: [
+    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
+    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+  ],
+  webServer: {
+    command: 'bun tests/e2e/serve.ts',
+    url: `http://localhost:${PORT}`,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
+});
