@@ -1,11 +1,37 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 // The theme toggle is the site's only JavaScript — the one behavior no
 // build-output inspection can verify.
 
-test('a first visit renders in dark', async ({ page }) => {
+declare global {
+  interface Window {
+    __themeAtFirstFrame?: Promise<string | undefined>;
+  }
+}
+
+/**
+ * Arm the next navigation to record the <html> theme at its first paint
+ * opportunity — the static HTML ships data-theme="dark", so a late-running
+ * theme script would paint a wrong-theme frame that a settled-state
+ * assertion can never see.
+ */
+function armFirstFrameCapture(page: Page) {
+  return page.addInitScript(() => {
+    window.__themeAtFirstFrame = new Promise((resolve) =>
+      requestAnimationFrame(() => resolve(document.documentElement.dataset.theme))
+    );
+  });
+}
+
+function themeAtFirstFrame(page: Page) {
+  return page.evaluate(() => window.__themeAtFirstFrame);
+}
+
+test('a first visit renders dark with no wrong-theme flash', async ({ page }) => {
   // Each test gets a fresh browser context: no stored theme, a true first visit.
+  await armFirstFrameCapture(page);
   await page.goto('/');
+  expect(await themeAtFirstFrame(page)).toBe('dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 
@@ -21,20 +47,10 @@ test('the toggled theme persists across navigation and a reload, with no flash',
   await expect(page).toHaveURL(/\/blog\/$/);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 
-  // …and across a full reload. The static HTML ships data-theme="dark", so a
-  // late-running theme script would paint a dark frame first: capture the
-  // theme at the first paint opportunity to prove it's already flipped.
-  await page.addInitScript(() => {
-    (window as { __themeAtFirstFrame?: Promise<string | undefined> }).__themeAtFirstFrame =
-      new Promise((resolve) =>
-        requestAnimationFrame(() => resolve(document.documentElement.dataset.theme))
-      );
-  });
+  // …and across a full reload, applied before the first frame paints.
+  await armFirstFrameCapture(page);
   await page.reload();
-  const themeAtFirstFrame = await page.evaluate(
-    () => (window as { __themeAtFirstFrame?: Promise<string | undefined> }).__themeAtFirstFrame
-  );
-  expect(themeAtFirstFrame).toBe('light');
+  expect(await themeAtFirstFrame(page)).toBe('light');
 });
 
 test('toggling back to dark also persists', async ({ page }) => {
