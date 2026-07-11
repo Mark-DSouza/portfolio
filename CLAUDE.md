@@ -16,6 +16,7 @@ bun run typecheck    # astro check
 bun run test         # unit + build tests
 bun run test:unit    # comparator unit tests only
 bun run test:build   # build-and-inspect tests only (builds fixtures → dist-test/)
+bun run test:e2e     # Playwright journeys against the wrangler-served fixture site
 ```
 
 ## Structure
@@ -35,6 +36,8 @@ tests/fixtures/content/   mock content the build tests run against
 ## Testing model (do not change without discussion)
 
 Two seams, pre-agreed: (1) **build-and-inspect** — tests build fixture content through `buildFixtureSite(variant)` in `tests/build/harness.ts`, then assert hardcoded expectations from the fixture literals; (2) **unit tests** for the ordering comparator. **Tests always use mock fixture data, never real content.** The harness is the single owner of the build dir protocol (`CONTENT_DIR`, per-variant `OUT_DIR`/`CACHE_DIR` split, pre-build output wipe) — never spawn `astro build` in a test directly; its why-comments explain the footguns.
+
+**In transition (issue #6, tickets #9–#12):** a third seam — **e2e** (`tests/e2e/`, Playwright over HTTP against the fixture site served with the production `wrangler.jsonc` semantics) — is absorbing build-and-inspect. Ticket #12 deletes `tests/build/` and rewrites this section for the final two-seam world (unit + e2e); until then, new site-behavior coverage goes in e2e, not build tests. CI (`.github/workflows/e2e.yml`) gates every PR and push to main.
 
 ## Behavior invariants (enforced by tests)
 

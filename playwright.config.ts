@@ -23,6 +23,9 @@ export default defineConfig({
   ],
   webServer: {
     command: 'bun tests/e2e/serve.ts',
+    // Single owner of the port: serve.ts reads it from this env, so the
+    // polled url above can never drift from where the server listens.
+    env: { E2E_PORT: String(PORT) },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

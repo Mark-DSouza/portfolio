@@ -11,7 +11,9 @@ import { buildFixtureSite } from '../build/harness';
  */
 buildFixtureSite('e2e');
 
-const port = process.env.E2E_PORT ?? '8788';
+// Set by playwright.config.ts's webServer block — the port's single owner.
+const port = process.env.E2E_PORT;
+if (!port) throw new Error('E2E_PORT unset — run via `bun run test:e2e`, not directly');
 const server = Bun.spawn(
   ['bunx', 'wrangler', 'dev', '--assets', './dist-test/e2e', '--port', port],
   { stdout: 'inherit', stderr: 'inherit' }
