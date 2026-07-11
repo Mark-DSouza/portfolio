@@ -55,9 +55,9 @@ Restrained synthwave: deep-night base, neon magenta/cyan accents (CSS vars in `s
 - Mark drafts in Obsidian: convert `[[wikilinks]]` and callouts to standard markdown on the way in.
 - Scope boundary: engineering brand only — Flashback Photography (Mark's photography business) never appears here.
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare Workers)
 
-Build command `bun run build`, output `dist`, pin `BUN_VERSION` env var. Custom domain: apex + `www` redirect, wired natively (zone is in the same Cloudflare account). Preview deploys show whatever is on their branch; publishing is merging to `main` (ADR-0001).
+Workers Builds, Git-connected: build `bun run build`, deploy `npx wrangler deploy` (production branch `main`), `npx wrangler versions upload` for non-production branches; `BUN_VERSION` pinned as a dashboard variable. `wrangler.jsonc` is **assets-only — no Worker script** (ADR-0002; Cloudflare's autoconfig bot proposed the `@astrojs/cloudflare` SSR adapter and was deliberately rejected), and its `name` must stay `portfolio`, the live worker. Serving semantics are explicit there: auto trailing slashes, styled 404 via `not_found_handling`. Custom domain: `markdsouza.dev` apex (zone in the same account); the workers.dev route is deliberately disabled (SEO). Publishing is merging to `main` (ADR-0001).
 
 ## Deferred (see handoff §6 / issue #1 out-of-scope)
 
