@@ -22,8 +22,6 @@ jobs:
 
       - run: bun run test:unit
 
-      - run: bun run test:build
-
       - run: bunx playwright install chromium --with-deps
 
       - run: bun run test:e2e

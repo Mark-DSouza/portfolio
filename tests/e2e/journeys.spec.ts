@@ -73,6 +73,36 @@ test('the landing page shows Featured cards only, plus the contact links', async
   ).toBeVisible();
 });
 
+test('a Tag page lists only the Posts carrying that Tag', async ({ page }) => {
+  await page.goto('/blog/tags/fixture-alpha-tag/');
+  await expect(page.getByRole('link', { name: 'Fixture Alpha' })).toBeVisible();
+  // Beta doesn't carry fixture-alpha-tag: a tag page leaking other posts must fail.
+  await expect(page.locator('a[href*="/blog/published-beta"]')).toHaveCount(0);
+});
+
+test('every Post page carries its body', async ({ page }) => {
+  for (const [id, sentinel] of [
+    ['published-alpha', 'fixture-alpha-body'],
+    ['published-beta', 'fixture-beta-body'],
+  ] as const) {
+    await page.goto(`/blog/${id}/`);
+    await expect(page.locator('body')).toContainText(sentinel);
+  }
+});
+
+test('every Case study carries its body and repo link', async ({ page }) => {
+  for (const [id, sentinel, repo] of [
+    ['flagship', 'fixture-flagship-body', 'https://github.com/example/flagship'],
+    ['pinned', 'fixture-pinned-body', 'https://github.com/example/pinned'],
+    ['recent', 'fixture-recent-body', 'https://github.com/example/recent'],
+    ['older', 'fixture-older-body', 'https://github.com/example/older'],
+  ] as const) {
+    await page.goto(`/projects/${id}/`);
+    await expect(page.locator('body')).toContainText(sentinel);
+    await expect(page.getByRole('link', { name: 'View code →' })).toHaveAttribute('href', repo);
+  }
+});
+
 test('a Case study shows its repo link, Demo link, and an honest status badge', async ({
   page,
 }) => {

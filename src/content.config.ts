@@ -2,7 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-/** Tests point the build at fixture content via CONTENT_DIR (owned by tests/build/harness.ts); real builds use src/content. */
+/** Tests point the build at fixture content via CONTENT_DIR (owned by tests/e2e/harness.ts); real builds use src/content. */
 const contentRoot = process.env.CONTENT_DIR ?? './src/content';
 
 /** Tags are lowercase-kebab so casing variants can never fork into duplicate tag pages. */

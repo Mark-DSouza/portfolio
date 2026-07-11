@@ -1,4 +1,4 @@
-import { buildFixtureSite } from '../build/harness';
+import { buildFixtureSite } from './harness';
 
 /**
  * E2E web server, owned by playwright.config.ts (its webServer block runs and

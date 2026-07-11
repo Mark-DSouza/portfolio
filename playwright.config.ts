@@ -19,7 +19,14 @@ export default defineConfig({
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+    // schema/output are browserless (build guards, HTTP fetches, fs globs):
+    // viewport-irrelevant, and the schema builds would race two workers over
+    // the same variant output dir if run per-project.
+    {
+      name: 'mobile',
+      use: { ...devices['Pixel 7'] },
+      testIgnore: ['**/schema.spec.ts', '**/output.spec.ts'],
+    },
   ],
   webServer: {
     command: 'bun tests/e2e/serve.ts',
