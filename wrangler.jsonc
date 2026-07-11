@@ -1,0 +1,18 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	// `name` must stay "portfolio" — that is the live worker; any other value
+	// makes `wrangler deploy` create a second worker instead of updating it.
+	"name": "portfolio",
+	"compatibility_date": "2026-07-11",
+	// Assets-only: no `main`, no Worker script. The site is fully static
+	// (ADR-0002) — Cloudflare's autoconfig bot proposed the @astrojs/cloudflare
+	// SSR adapter here; that was deliberately rejected.
+	"assets": {
+		"directory": "./dist",
+		// Matches observed production behavior: /blog → 307 → /blog/.
+		"html_handling": "auto-trailing-slash",
+		// Serves dist/404.html with 404 status. Deliberate change from the
+		// pre-config default ("none"), which gave visitors an empty 404 body.
+		"not_found_handling": "404-page"
+	}
+}

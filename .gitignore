@@ -4,6 +4,8 @@ dist-test/
 # generated types and content-layer cache
 .astro/
 .astro-test/
+# wrangler local state
+.wrangler/
 
 # dependencies
 node_modules/
