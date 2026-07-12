@@ -57,7 +57,7 @@ Restrained synthwave: deep-night base, neon magenta/cyan accents (CSS vars in `s
 
 ## Deploy (Cloudflare Pages)
 
-Build command `bun run build`, output `dist`, pin `BUN_VERSION` env var. Custom domain: apex + `www` redirect, wired natively (zone is in the same Cloudflare account). Preview deploys show drafts; production (`main`) excludes them.
+Build command `bun run build`, output `dist`, pin `BUN_VERSION` env var to the version in `.bun-version` (CI reads that file; the two must move together — nothing enforces it). Custom domain: apex + `www` redirect, wired natively (zone is in the same Cloudflare account). Preview deploys show drafts; production (`main`) excludes them.
 
 ## Deferred (see handoff §6 / issue #1 out-of-scope)
 
